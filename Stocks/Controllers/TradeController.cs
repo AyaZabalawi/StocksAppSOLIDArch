@@ -3,8 +3,11 @@ using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
+using Stocks.Filters.ActionFilters;
 using Stocks.Models;
-using System.Diagnostics;
+using Stocks.Filters.ActionFilters;
+using Stocks.Models;
+using Stocks;
 using System.Text.Json;
 
 namespace Stocks.Controllers
@@ -16,7 +19,6 @@ namespace Stocks.Controllers
         private readonly IStocksService _stocksService;
         private readonly IFinnhubService _finnhubService;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<TradeController> _logger;
 
 
         /// <summary>
@@ -26,13 +28,12 @@ namespace Stocks.Controllers
         /// <param name="stocksService">Injecting StocksService</param>
         /// <param name="finnhubService">Injecting FinnhubService</param>
         /// <param name="configuration">Injecting IConfiguration</param>
-        public TradeController(IOptions<TradingOptions> tradingOptions, IStocksService stocksService, IFinnhubService finnhubService, IConfiguration configuration, ILogger<TradeController> logger)
+        public TradeController(IOptions<TradingOptions> tradingOptions, IStocksService stocksService, IFinnhubService finnhubService, IConfiguration configuration)
         {
             _tradingOptions = tradingOptions.Value;
             _stocksService = stocksService;
             _finnhubService = finnhubService;
             _configuration = configuration;
-            _logger = logger;
         }
 
 
@@ -40,10 +41,6 @@ namespace Stocks.Controllers
         [Route("~/[controller]/{stockSymbol}")]
         public async Task<IActionResult> Index(string stockSymbol)
         {
-            //logger
-            _logger.LogInformation("In TradeController.Index() action method");
-            _logger.LogDebug("stockSymbol: {stockSymbol}", stockSymbol);
-
             //reset stock symbol if not exists
             if (string.IsNullOrEmpty(stockSymbol))
                 stockSymbol = "MSFT";
@@ -74,25 +71,11 @@ namespace Stocks.Controllers
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<IActionResult> BuyOrder(BuyOrderRequest buyOrderRequest)
+        [TypeFilter(typeof(CreateOrderActionFilter))]
+        public async Task<IActionResult> BuyOrder(BuyOrderRequest orderRequest)
         {
-            //update date of order
-            buyOrderRequest.DateAndTimeOfOrder = DateTime.Now;
-
-            //re-validate the model object after updating the date
-            ModelState.Clear();
-            TryValidateModel(buyOrderRequest);
-
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                StockTrade stockTrade = new StockTrade() { StockName = buyOrderRequest.StockName, Quantity = buyOrderRequest.Quantity, StockSymbol = buyOrderRequest.StockSymbol };
-                return View("Index", stockTrade);
-            }
-
             //invoke service method
-            BuyOrderResponse buyOrderResponse = await _stocksService.CreateBuyOrder(buyOrderRequest);
+            BuyOrderResponse buyOrderResponse = await _stocksService.CreateBuyOrder(orderRequest);
 
             return RedirectToAction(nameof(Orders));
         }
@@ -100,24 +83,11 @@ namespace Stocks.Controllers
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<IActionResult> SellOrder(SellOrderRequest sellOrderRequest)
+        [TypeFilter(typeof(CreateOrderActionFilter))]
+        public async Task<IActionResult> SellOrder(SellOrderRequest orderRequest)
         {
-            //update date of order
-            sellOrderRequest.DateAndTimeOfOrder = DateTime.Now;
-
-            //re-validate the model object after updating the date
-            ModelState.Clear();
-            TryValidateModel(sellOrderRequest);
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                StockTrade stockTrade = new StockTrade() { StockName = sellOrderRequest.StockName, Quantity = sellOrderRequest.Quantity, StockSymbol = sellOrderRequest.StockSymbol };
-                return View("Index", stockTrade);
-            }
-
             //invoke service method
-            SellOrderResponse sellOrderResponse = await _stocksService.CreateSellOrder(sellOrderRequest);
+            SellOrderResponse sellOrderResponse = await _stocksService.CreateSellOrder(orderRequest);
 
             return RedirectToAction(nameof(Orders));
         }
