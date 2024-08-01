@@ -3,19 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks", "Stocks\Stocks.csproj", "{FD20A00C-7D90-4C25-967D-8DF418E7554A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks", "Stocks\Stocks.csproj", "{FD20A00C-7D90-4C25-967D-8DF418E7554A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{E4832980-E658-4EFB-9EBC-EA9A02273086}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{E4832980-E658-4EFB-9EBC-EA9A02273086}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{D95523F8-5D48-4062-9D6D-BEBA4E05E3B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{D95523F8-5D48-4062-9D6D-BEBA4E05E3B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryContracts", "RepositoryContracts\RepositoryContracts.csproj", "{43D0A079-1A62-4C87-A3D0-A62F9BEA223F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryContracts", "RepositoryContracts\RepositoryContracts.csproj", "{43D0A079-1A62-4C87-A3D0-A62F9BEA223F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{16E1BEDD-6E55-4CA2-91D8-8B9A54712741}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{16E1BEDD-6E55-4CA2-91D8-8B9A54712741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceContracts", "ServiceContracts\ServiceContracts.csproj", "{F0C094CF-A4B4-4B0A-9584-CF3E8CFC3EC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceContracts", "ServiceContracts\ServiceContracts.csproj", "{F0C094CF-A4B4-4B0A-9584-CF3E8CFC3EC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{12D08434-0826-48A9-A17C-480A96462504}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{12D08434-0826-48A9-A17C-480A96462504}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{6C6AE1AC-DE7E-46A2-98E0-51497409E99A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{12D08434-0826-48A9-A17C-480A96462504}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12D08434-0826-48A9-A17C-480A96462504}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12D08434-0826-48A9-A17C-480A96462504}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C6AE1AC-DE7E-46A2-98E0-51497409E99A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C6AE1AC-DE7E-46A2-98E0-51497409E99A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C6AE1AC-DE7E-46A2-98E0-51497409E99A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C6AE1AC-DE7E-46A2-98E0-51497409E99A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

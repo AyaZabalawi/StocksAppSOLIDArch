@@ -6,6 +6,7 @@ using Serilog;
 using ServiceContracts;
 using Services;
 using Stocks;
+using Stocks.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,7 @@ builder.Services.AddHttpLogging(options =>
 });
 
 builder.Services.AddHttpClient();
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 var app = builder.Build();
 
@@ -45,6 +47,11 @@ app.UseSerilogRequestLogging();
 if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler("/Error"); //generic error handling
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
 }
 
 if (builder.Environment.IsEnvironment("Test") == false)
