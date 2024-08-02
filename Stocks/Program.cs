@@ -3,8 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
 using Serilog;
-using ServiceContracts;
-using Services;
+using ServiceContracts.FinnhubService;
+using ServiceContracts.StocksService;
+using Services.FinnhubService;
+using Services.StocksService;
 using Stocks;
 using Stocks.Middleware;
 
@@ -21,8 +23,12 @@ builder.Host.UseSerilog((HostBuilderContext context, IServiceProvider services, 
 //Services
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TradingOptions"));
-builder.Services.AddTransient<IStocksService, StocksService>();
-builder.Services.AddTransient<IFinnhubService, FinnhubService>();
+builder.Services.AddTransient<IBuyOrdersService, StocksBuyOrderService>();
+builder.Services.AddTransient<ISellOrderService, StocksSellOrderService>();
+builder.Services.AddTransient<IFinnhubCompanyProfileService, FinnhubCompanyProfile>();
+builder.Services.AddTransient<IFinnhubStockPriceQuoteService, FinnhubStockPriceQuoteService>();
+builder.Services.AddTransient<IFinnhubStocksService, FinnhubStocksService>();
+builder.Services.AddTransient<IFinnhubSearchStocksService, FinnhubSearchStocksService>();
 builder.Services.AddTransient<IStocksRepository, StocksRepository>();
 builder.Services.AddTransient<IFinnhubRepository, FinnhubRepository>();
 
@@ -40,6 +46,8 @@ builder.Services.AddHttpLogging(options =>
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
+
+
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
@@ -50,9 +58,10 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Error"); //generic error handling
+    app.UseExceptionHandler("/Error");
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 }
+
 
 if (builder.Environment.IsEnvironment("Test") == false)
     Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");

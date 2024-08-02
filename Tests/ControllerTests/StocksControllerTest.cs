@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Moq;
 using ServiceContracts;
+using ServiceContracts.FinnhubService;
+using Stocks;
 using Stocks.Controllers;
 using Stocks.Models;
-using Stocks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,15 +19,15 @@ namespace Tests.ControllerTests
 {
     public class StocksControllerTest
     {
-        private readonly IFinnhubService _finnhubService;
-        private readonly Mock<IFinnhubService> _finnhubServiceMock;
+        private readonly IFinnhubStocksService _finnhubService;
+        private readonly Mock<IFinnhubStocksService> _finnhubServiceMock;
         private readonly Fixture _fixture;
 
         public StocksControllerTest()
         {
             _fixture = new Fixture();
 
-            _finnhubServiceMock = new Mock<IFinnhubService>();
+            _finnhubServiceMock = new Mock<IFinnhubStocksService>();
 
             _finnhubService = _finnhubServiceMock.Object;
         }

@@ -1,29 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ServiceContracts;
+using ServiceContracts.FinnhubService;
+using ServiceContracts.StocksService;
 
 namespace Stocks.ViewComponents
 {
     public class SelectedStockViewComponent : ViewComponent
     {
         private readonly TradingOptions _tradingOptions;
-        private readonly IStocksService _stocksService;
-        private readonly IFinnhubService _finnhubService;
+        private readonly IBuyOrdersService _stocksService;
+        private readonly IFinnhubCompanyProfileService _finnhubCompanyProfileService;
+        private readonly IFinnhubStockPriceQuoteService _finnhubStockPriceQuoteService;
         private readonly IConfiguration _configuration;
 
-
-        /// <summary>
-        /// Constructor for TradeController that executes when a new object is created for the class
-        /// </summary>
-        /// <param name="tradingOptions">Injecting TradeOptions config through Options pattern</param>
-        /// <param name="stocksService">Injecting StocksService</param>
-        /// <param name="finnhubService">Injecting FinnhubService</param>
-        /// <param name="configuration">Injecting IConfiguration</param>
-        public SelectedStockViewComponent(IOptions<TradingOptions> tradingOptions, IStocksService stocksService, IFinnhubService finnhubService, IConfiguration configuration)
+        public SelectedStockViewComponent(IOptions<TradingOptions> tradingOptions, IBuyOrdersService stocksService, IFinnhubCompanyProfileService finnhubCompanyProfileService, IFinnhubStockPriceQuoteService finnhubStockPriceQuoteService, IConfiguration configuration)
         {
             _tradingOptions = tradingOptions.Value;
             _stocksService = stocksService;
-            _finnhubService = finnhubService;
+            _finnhubCompanyProfileService = finnhubCompanyProfileService;
+            _finnhubStockPriceQuoteService = finnhubStockPriceQuoteService;
             _configuration = configuration;
         }
 
@@ -33,8 +29,8 @@ namespace Stocks.ViewComponents
 
             if (stockSymbol != null)
             {
-                companyProfileDict = await _finnhubService.GetCompanyProfile(stockSymbol);
-                var stockPriceDict = await _finnhubService.GetStockPriceQuote(stockSymbol);
+                companyProfileDict = await _finnhubCompanyProfileService.GetCompanyProfile(stockSymbol);
+                var stockPriceDict = await _finnhubStockPriceQuoteService.GetStockPriceQuote(stockSymbol);
                 if (stockPriceDict != null && companyProfileDict != null)
                 {
                     companyProfileDict.Add("price", stockPriceDict["c"]);
